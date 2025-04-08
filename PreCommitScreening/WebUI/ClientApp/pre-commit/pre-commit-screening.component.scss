@@ -1,0 +1,40 @@
+@import '../../assets/scss/variables';
+
+table {
+    width: 100%;
+}
+.add-new-label {
+    display: flex;
+    align-items: center;
+}
+.mat-cell{
+    text-align: center;
+    text-transform: capitalize !important;
+} 
+.label-text{
+    font-weight:600;
+}
+.tooltip2 {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px black;
+}
+
+.tooltip2 .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: brown;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: -5px 0;
+  margin-left: -300%;
+  margin-top: 0;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip2:hover .tooltiptext {
+  visibility: visible;
+}

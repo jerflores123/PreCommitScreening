@@ -1,0 +1,99 @@
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane" class="box">
+  <div class="header" cdkDragHandle>
+    <h3>{{ data.item ? "Edit" : "Add" }} Pre Commit Screening - (#{{ data.sin }})</h3>
+    <button type="button" mat-dialog-close mat-button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+      X
+    </button>
+  </div>
+  <form [formGroup]="formGroup" autocomplete="off" >
+    <div class="body">
+      <div class="container">
+        <div class="row">
+
+          <div class="col">
+            <div class="form-group">
+              <label>Screening Type</label>
+              <select class="form-control" name="screening_type_id" formControlName="screening_type_id">
+                <option value="" disabled>Choose a Type</option>
+                <option *ngFor="let c of data.screeningTypes" [value]="c.screening_type_id">
+                  {{ c.screening_type }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label>Screening Date</label>
+              <input name="screening_date" class="form-control" formControlName="screening_date"
+                [owlDateTimeTrigger]="dt" [owlDateTime]="dt" />
+              <owl-date-time [pickerType]="'calendar'" [startAt]="today" #dt></owl-date-time>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label>County</label>
+              <select class="form-control" name="county_name" formControlName="county_name">
+                <option value="" disabled>Choose a County</option>
+                <option *ngFor="let c of data.counties" [value]="c.name">{{ c.name }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label>IDJC Staff Present</label>
+              <input type="text" class="form-control" formControlName="idjc_staff_present" name="idjc_staff_prsent" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group" formArrayName="recommended_screenings">
+              <label>Screening Recommendations</label>
+              <div *ngFor="let item of data.recommendations; let i = index" formGroupName="{{i}}">
+                <input type="checkbox" id="recommendations_{{i}}"
+                  formControlName="recommendation_{{ item.screeningRecId }}" name="{{item.screeningRecommendation}}"
+                  class="mr-2" />
+                <label for="recommendations_{{i}}">{{item.screeningRecommendation}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group" formArrayName="screening_participation">
+              <label>Screening Participants</label>
+              <div *ngFor="let item of data.participents; let i = index" formGroupName="{{i}}">
+                <input type="checkbox" id="participents_{{i}}"
+                  formControlName="participent_{{ item.screeningParticipantId }}"
+                  name="{{item.screeningParticipant}}" class="mr-2" />
+                <label for="participents_{{i}}">{{item.screeningParticipant}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Comments</label>
+              <textarea class="form-control" formControlName="notes" rows="3" style="resize: none;"></textarea>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="data.item != null" class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Created By: {{ data.item.created_by_staff }} Last Edit: {{ data.item.modified_date | date: "MM/dd/yyyy" }} </label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button class="btn btn-close mr-3" mat-dialog-close mat-button>Cancel</button>
+      <button class="btn btn-primary" *ngIf="data.cansaveedit && (data.item != null)" (click)="submit()">Update</button>
+      <button class="btn btn-primary" *ngIf="data.item == null" (click)="submit()">Save</button>
+    </div>
+  </form>
+</div>

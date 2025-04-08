@@ -1,0 +1,50 @@
+<div class="text-center mt-5 pt-5" *ngIf="Privilege && !Privilege.read_priv">
+  <h4>Sorry! You don't have permission to access this page.</h4>
+  <p>Please contact IJOS SUPPORT at IJOS.SUPPORT@idjc.idaho.gov</p>
+</div>
+<div *ngIf="Privilege && Privilege.read_priv">
+  <app-offender-header title="Pre Commit Screening" [id]="_sin"> </app-offender-header>
+  <div class="container">
+    <div class="row">
+      <div class="col text-right mb-3">
+        <div class="tooltip2">
+          <button class="btn btn-link" (click)="Privilege.create_priv && OpenItem()">
+            Add New Screening
+          </button>
+          <span *ngIf="!Privilege.create_priv" class="tooltiptext">You don't have permission</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <table class='table'>
+          <thead class="tableheadercontent">
+            <tr>
+              <th>Sl.No</th>
+              <th>Screening Type</th>
+              <th>Screening Date</th>
+              <th>County</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="tablecontent" *ngIf="screeningTypes.length > 0">
+            <tr *ngFor="let item of items; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ getScreeningTypeById(item.screening_type_id) }}</td>
+              <td>{{ item.screening_date | date:'MM/dd/yyyy' }}</td>
+              <td>{{ item.county_name }}</td>
+              <td>
+                <mat-icon class="edit-icon-2 btn-action" *ngIf="staffKey==item.created_by || Privilege.modify_priv"
+                  (click)="edit(item,true)">edit</mat-icon>
+                <mat-icon class="btn-action" *ngIf="staffKey!=item.created_by && !Privilege.modify_priv"
+                  (click)="edit(item,false)">remove_red_eye</mat-icon>
+                <mat-icon class="edit-icon-2 btn-action" *ngIf="staffKey==item.created_by || Privilege.delete_priv"
+                  (click)="delete(item)">delete</mat-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
